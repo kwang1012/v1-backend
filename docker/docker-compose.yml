@@ -1,0 +1,16 @@
+services:
+  postgres:
+    container_name: kkapp-postgres
+    image: postgres
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: kkapp
+      POSTGRES_PASSWORD: kkapp
+      POSTGRES_DB: kkapp
+    ports:
+      - "5434:5432"
+
+volumes:
+  pgdata:

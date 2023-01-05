@@ -1,0 +1,1 @@
+cat $1 | docker exec -i kkapp-postgres psql -U kkapp
