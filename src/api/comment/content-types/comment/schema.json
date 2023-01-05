@@ -18,9 +18,6 @@
     "name": {
       "type": "string"
     },
-    "email": {
-      "type": "string"
-    },
     "post": {
       "type": "relation",
       "relation": "manyToOne",
@@ -38,6 +35,12 @@
       "relation": "manyToOne",
       "target": "api::comment.comment",
       "inversedBy": "children"
+    },
+    "email": {
+      "type": "email"
+    },
+    "avatar": {
+      "type": "text"
     }
   }
 }

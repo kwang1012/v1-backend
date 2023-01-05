@@ -16,7 +16,11 @@ module.exports = createCoreController("api::post.post", ({ strapi }) => ({
         },
       },
       populate: {
-        comments: true,
+        // comments: {
+        //   orderBy: {
+        //     createdAt: "desc",
+        //   },
+        // },
         post_category: true,
       },
     });
