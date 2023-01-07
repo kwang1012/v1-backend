@@ -59,8 +59,8 @@ module.exports = createCoreController("api::comment.comment", ({ strapi }) => ({
       "populate[1]": "children",
     };
     const entity = await super.create(ctx);
-    const parentEmail = entity.data.attributes.parent?.data.attributes.email;
-    const parentName = entity.data.attributes.parent?.data.attributes.name;
+    const parentEmail = entity.data.attributes.parent?.data?.attributes?.email;
+    const parentName = entity.data.attributes.parent?.data?.attributes?.name;
     const email = entity.data.attributes.email;
 
     // send email
