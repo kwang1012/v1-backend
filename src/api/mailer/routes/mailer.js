@@ -8,5 +8,13 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "POST",
+      path: "/mailer/on-message",
+      handler: "mailer.onMessage",
+      config: {
+        auth: false,
+      },
+    },
   ],
 };

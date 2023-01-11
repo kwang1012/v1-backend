@@ -1,5 +1,9 @@
 "use strict";
 
+const fs = require("fs");
+const moment = require("moment");
+const sharp = require("sharp");
+
 /**
  * comment controller
  */
@@ -57,25 +61,64 @@ module.exports = createCoreController("api::comment.comment", ({ strapi }) => ({
       ...ctx.query,
       "populate[0]": "parent",
       "populate[1]": "children",
+      "populate[2]": "post",
     };
     const entity = await super.create(ctx);
     const parentEmail = entity.data.attributes.parent?.data?.attributes?.email;
-    const parentName = entity.data.attributes.parent?.data?.attributes?.name;
     const email = entity.data.attributes.email;
 
-    // send email
-    if (parentEmail && parentEmail !== email) {
-      strapi
-        .plugin("email")
-        .service("email")
-        .send({
-          from: "no-reply@kwang.cc",
-          to: parentEmail,
-          subject: "Someone replies your comment",
-          text: `Hello ${parentName}, \n\nThis is an email for informing you that one of your comments has been replied. If you do not want to receive the email, please contact contact@kwang.cc, thnaks!`,
-        })
-        .then(() => {})
-        .catch(console.log);
+    try {
+      const comment = entity.data.attributes;
+      comment.post = comment.post.data.attributes;
+      const avatar_uri = decodeURIComponent(comment.avatar)
+        .split(";utf8,")
+        .pop();
+      const filename = `tmp_${Date.now()}.png`;
+      const avatar_64 = await sharp(Buffer.from(avatar_uri, "utf-8"))
+        .png()
+        .toFile(filename);
+      // .toBuffer();
+
+      // const avatar = `data:image/png;base64,${avatar_64.toString("base64")}`;
+
+      // send email
+      if (parentEmail && parentEmail !== email) {
+        strapi
+          .plugin("email-designer")
+          .service("email")
+          .sendTemplatedEmail(
+            {
+              to: parentEmail,
+              from: "notification@kwang.cc",
+              replyTo: "reply@kwang.cc",
+              attachments: [
+                {
+                  filename: "avatar.png",
+                  path: filename,
+                  cid: "avatar",
+                },
+              ],
+            },
+            {
+              templateReferenceId: 2,
+              subject: `[KKapp] ${comment.name} sent you a message`,
+            },
+            {
+              reply: {
+                ...comment,
+                createdAt: moment(comment.createdAt).format(
+                  "MMMM Do [at] h:mm A"
+                ),
+              },
+            }
+          )
+          .then(() => {
+            fs.unlink(filename, () => {});
+          })
+          .catch(console.log);
+      }
+    } catch (e) {
+      console.log(e);
     }
     return entity;
   },
