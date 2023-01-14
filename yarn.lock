@@ -1879,9 +1879,9 @@
     url-join "4.0.1"
 
 "@strapi/provider-email-nodemailer@^4.5.5":
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/@strapi/provider-email-nodemailer/-/provider-email-nodemailer-4.5.5.tgz#b562ca4c046901f397b32c20cf6892baec8d1141"
-  integrity sha512-CC7DDGtSW0Pevd/0ro7EkqQKch3H27ofK1L41WYqFpESHL7uROfoTyYbizlDlXa5Iw/gCV6OI39ufVYYrKE3Sw==
+  version "4.5.6"
+  resolved "https://registry.yarnpkg.com/@strapi/provider-email-nodemailer/-/provider-email-nodemailer-4.5.6.tgz#95ca32f5f2b0c9602efa8b8fd3f69dc635af58cd"
+  integrity sha512-Tpv0WL4BTYyXXY5eMt6pwnMdwVb3RrDPjRH9BA7LHYAfAQCk4wy/7uWoHJYPoQG3qvwkNihWkMjdcb3cL52n6A==
   dependencies:
     lodash "4.17.21"
     nodemailer "6.8.0"
@@ -5981,11 +5981,6 @@ is-arrayish@^0.3.1:
   resolved "https://registry.yarnpkg.com/is-arrayish/-/is-arrayish-0.3.2.tgz#4574a2ae56f7ab206896fb431eaeed066fdf8f03"
   integrity sha512-eVRqCvVlZbuw3GrM63ovNSNAeA1K16kaR/LRY/92w0zxQ5/1YzwblUX652i4Xs9RwAGjW9d9y6X88t8OaAJfWQ==
 
-is-base64@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-base64/-/is-base64-1.1.0.tgz#8ce1d719895030a457c59a7dcaf39b66d99d56b4"
-  integrity sha512-Nlhg7Z2dVC4/PTvIFkgVVNvPHSO2eR/Yd0XzhGiXCXEvWnptXlXa/clQ8aePPiMuxEGcWfzWbGw2Fe3d+Y3v1g==
-
 is-binary-path@~2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-binary-path/-/is-binary-path-2.1.0.tgz#ea1f7f3b80f064236e83470f86c09c254fb45b09"
@@ -6283,6 +6278,14 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==
+
+isomorphic-unfetch@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/isomorphic-unfetch/-/isomorphic-unfetch-3.1.0.tgz#87341d5f4f7b63843d468438128cb087b7c3e98f"
+  integrity sha512-geDJjpoZ8N0kWexiwkX8F9NkTsXhetLPVbZFQ+JTW239QNOwvB0gniuR1Wc6f0AMTn7/mFGyXvHTifrCp/GH8Q==
+  dependencies:
+    node-fetch "^2.6.1"
+    unfetch "^4.2.0"
 
 isstream@^0.1.2, isstream@~0.1.2:
   version "0.1.2"
@@ -6928,6 +6931,13 @@ mailcomposer@3.12.0:
     buildmail "3.10.0"
     libmime "2.1.0"
 
+mailersend@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/mailersend/-/mailersend-1.4.6.tgz#a9193f6bcf2cc2dbd3bab2515c0d1c7efa4c391a"
+  integrity sha512-H01TEAQIS2xciqow401yNjvFeooCH0BHF6DuSl7H9wsiP2GEvjeuiMaeSdUOGNd2N45t+qyKCuBeyxu7J0xWEg==
+  dependencies:
+    isomorphic-unfetch "^3.1.0"
+
 make-dir@^3.0.0, make-dir@^3.0.2, make-dir@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-3.1.0.tgz#415e967046b3a7f1d185277d84aa58203726a13f"
@@ -7490,7 +7500,7 @@ nodemailer-shared@1.1.0:
   dependencies:
     nodemailer-fetch "1.6.0"
 
-nodemailer@6.8.0, nodemailer@^6.8.0:
+nodemailer@6.8.0:
   version "6.8.0"
   resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.8.0.tgz#804bcc5256ee5523bc914506ee59f8de8f0b1cd5"
   integrity sha512-EjYvSmHzekz6VNkNd12aUqAco+bOkRe3Of5jVhltqKhEsjw/y0PYPJfp83+s9Wzh1dspYAkUW/YNQ350NATbSQ==
@@ -9567,6 +9577,13 @@ strapi-plugin-email-designer@^2.1.2:
     react-syntax-highlighter "^15.5.0"
     striptags "^3.2.0"
 
+strapi-provider-email-mailersend@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/strapi-provider-email-mailersend/-/strapi-provider-email-mailersend-1.0.2.tgz#7fbbdb4e77496f9adc45c25750086c243b2f6630"
+  integrity sha512-/sxcpWDairJB+brKXwETZaEKbft98TIXNPs6MA7qxMPQFtLfFli7oyvQaZIvbIQ9Jma2W1O6iIlCKGixooOoIw==
+  dependencies:
+    mailersend "^1.4.6"
+
 stream-browserify@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-3.0.0.tgz#22b0a2850cdf6503e73085da1fc7b7d0c2122f2f"
@@ -10036,6 +10053,11 @@ unc-path-regex@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/unc-path-regex/-/unc-path-regex-0.1.2.tgz#e73dd3d7b0d7c5ed86fbac6b0ae7d8c6a69d50fa"
   integrity sha512-eXL4nmJT7oCpkZsHZUOJo8hcX3GbsiDOa0Qu9F646fi8dT3XuSVopVqAcEiVzSKKH7UoDti23wNX3qGFxcW5Qg==
+
+unfetch@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-4.2.0.tgz#7e21b0ef7d363d8d9af0fb929a5555f6ef97a3be"
+  integrity sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.0"

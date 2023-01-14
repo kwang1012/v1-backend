@@ -5,6 +5,10 @@ module.exports = ({ env }) => ({
       providerOptions: {
         host: env("SMTP_HOST", "localhost"),
         port: env("SMTP_PORT", 25),
+        auth: {
+          user: env("SMTP_USER", "user"),
+          pass: env("SMTP_PASS", "password"),
+        },
       },
       settings: {
         defaultFrom: "Kai Wang <kswang@kkapp.cc>",

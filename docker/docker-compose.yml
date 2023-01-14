@@ -11,6 +11,37 @@ services:
       POSTGRES_DB: kkapp
     ports:
       - "5434:5432"
+  # mail:
+  #   container_name: kkapp-mail
+  #   image: tvial/docker-mailserver:latest
+  #   hostname: mail.kwang.cc
+  #   ports:
+  #     - "25:25"
+  #     - "143:143"
+  #     - "587:587"
+  #     - "993:993"
+  #   volumes:
+  #     - /home/mail:/var/mail
+  #     - /home/mail-state:/var/mail-state
+  #     - /home/mail-logs/:/var/log/mail
+  #     - /root/config/:/tmp/docker-mailserver/
+  #     - /etc/letsencrypt:/etc/letsencrypt
+  #   environment:
+  #     - ENABLE_SPAMASSASSIN=0
+  #     - ENABLE_CLAMAV=0
+  #     - ENABLE_FAIL2BAN=1
+  #     - ONE_DIR=1
+  #     - DMS_DEBUG=0
+  #     - SSL_TYPE=letsencrypt
+  #   cap_add:
+  #     - NET_ADMIN
+  #   restart: always
 
 volumes:
   pgdata:
+  maildata:
+    driver: local
+  mailstate:
+    driver: local
+  maillogs:
+    driver: local

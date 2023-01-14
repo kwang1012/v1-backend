@@ -112,10 +112,11 @@ module.exports = createCoreController("api::comment.comment", ({ strapi }) => ({
               },
             }
           )
-          .then(() => {
+          .then(() => {})
+          .catch(console.log)
+          .finally(() => {
             fs.unlink(filename, () => {});
-          })
-          .catch(console.log);
+          });
       }
     } catch (e) {
       console.log(e);

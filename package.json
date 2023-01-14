@@ -17,10 +17,10 @@
     "@strapi/strapi": "4.5.4",
     "better-sqlite3": "7.4.6",
     "moment": "^2.29.4",
-    "nodemailer": "^6.8.0",
     "pg": "^8.8.0",
     "sharp": "^0.31.3",
-    "strapi-plugin-email-designer": "^2.1.2"
+    "strapi-plugin-email-designer": "^2.1.2",
+    "strapi-provider-email-mailersend": "^1.0.2"
   },
   "author": {
     "name": "A Strapi developer"
