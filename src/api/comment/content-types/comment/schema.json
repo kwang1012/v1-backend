@@ -46,6 +46,16 @@
       "type": "integer",
       "default": 0,
       "min": 0
+    },
+    "avatar_file": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

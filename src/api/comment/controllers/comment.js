@@ -1,8 +1,11 @@
 "use strict";
 
 const fs = require("fs");
+const mime = require("mime");
 const moment = require("moment");
+const path = require("path");
 const sharp = require("sharp");
+const { URL } = require("url");
 
 /**
  * comment controller
@@ -74,13 +77,25 @@ module.exports = createCoreController("api::comment.comment", ({ strapi }) => ({
         .split(";utf8,")
         .pop();
       const filename = `tmp_${Date.now()}.png`;
-      const avatar_64 = await sharp(Buffer.from(avatar_uri, "utf-8"))
-        .png()
-        .toFile(filename);
-      // .toBuffer();
+      const filePath = path.join(process.cwd(), "public", "uploads", filename);
+      await sharp(Buffer.from(avatar_uri, "utf-8")).png().toFile(filePath);
 
-      // const avatar = `data:image/png;base64,${avatar_64.toString("base64")}`;
-
+      const avatar = await strapi
+        .plugin("upload")
+        .service("upload")
+        .upload({
+          data: {
+            refId: entity.data.id,
+            ref: "api::comment.comment",
+            field: "avatar_file",
+          },
+          files: {
+            path: filePath,
+            name: filename,
+            type: mime.getType(filePath),
+            size: fs.statSync(filePath).size,
+          },
+        });
       // send email
       if (parentEmail && parentEmail !== email) {
         strapi
@@ -91,13 +106,6 @@ module.exports = createCoreController("api::comment.comment", ({ strapi }) => ({
               to: parentEmail,
               from: "notification@kwang.cc",
               replyTo: "reply@kwang.cc",
-              attachments: [
-                {
-                  filename: "avatar.png",
-                  path: filename,
-                  cid: "avatar",
-                },
-              ],
             },
             {
               templateReferenceId: 2,
@@ -106,6 +114,7 @@ module.exports = createCoreController("api::comment.comment", ({ strapi }) => ({
             {
               reply: {
                 ...comment,
+                avatar: new URL(avatar[0].url, process.env.SERVER_URL).href,
                 createdAt: moment(comment.createdAt).format(
                   "MMMM Do [at] h:mm A"
                 ),
@@ -113,10 +122,7 @@ module.exports = createCoreController("api::comment.comment", ({ strapi }) => ({
             }
           )
           .then(() => {})
-          .catch(console.log)
-          .finally(() => {
-            fs.unlink(filename, () => {});
-          });
+          .catch(console.log);
       }
     } catch (e) {
       console.log(e);
