@@ -31,6 +31,7 @@ const Wrapper = styled(Box)`
   position: sticky;
   display: flex;
   flex-direction: column;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 
 const CustomProgressBar = styled(ProgressBar)`

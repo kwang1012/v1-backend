@@ -1,4 +1,8 @@
 module.exports = ({ env }) => ({
+  dashboard: {
+    enabled: false,
+    resolve: "./src/plugins/dashboard",
+  },
   email: {
     config: {
       provider: "nodemailer",
