@@ -13,6 +13,7 @@ module.exports = [
             "cdn.jsdelivr.net",
             "strapi.io",
             "s3.amazonaws.com",
+            "avatars.githubusercontent.com",
           ],
         },
       },
