@@ -2,20 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { LoadingIndicatorPage } from "@strapi/helper-plugin";
 import { Box } from "@strapi/design-system/Box";
-import {
-  Card,
-  CardBody,
-  CardContent,
-  CardBadge,
-  CardTitle,
-  CardSubtitle,
-} from "@strapi/design-system/Card";
+import { Card } from "@strapi/design-system/Card";
 import { Flex } from "@strapi/design-system/Flex";
 import { Typography } from "@strapi/design-system/Typography";
 import { Grid } from "@strapi/design-system/Grid";
 import { SimpleMenu, MenuItem } from "@strapi/design-system/SimpleMenu";
 import { IconButton } from "@strapi/design-system/IconButton";
-import { TextButton } from "@strapi/design-system/TextButton";
 import { Table, Tbody, Tr, Td } from "@strapi/design-system/Table";
 import { Avatar } from "@strapi/design-system/Avatar";
 import More from "@strapi/icons/More";
@@ -25,12 +17,8 @@ import Earth from "@strapi/icons/Earth";
 import File from "@strapi/icons/File";
 import ChevronLeft from "@strapi/icons/ChevronLeft";
 import ChevronRight from "@strapi/icons/ChevronRight";
-import ChevronDown from "@strapi/icons/ChevronDown";
-import Calendar from "@strapi/icons/Calendar";
-import Bell from "@strapi/icons/Bell";
-import Message from "@strapi/icons/Message";
-import Discuss from "@strapi/icons/Discuss";
 import { useModels } from "../../hooks";
+import Sidebar from "components/Sidebar";
 
 const Layout = styled(Box)`
   height: 100vh;
@@ -47,17 +35,6 @@ const Main = styled(Box)`
   }
 `;
 
-const Wrapper = styled(Box)`
-  padding: 12px;
-  background-color: #fcedf2;
-  border-radius: 16px;
-  height: calc(100vh - 48px);
-  grid-column: span 3;
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-`;
-
 const MoreVert = styled(More)`
   transform: rotate(90deg);
 `;
@@ -70,14 +47,6 @@ const GridCard = styled(Card)`
 const CustomGridItem = ({ children, ...props }) => {
   return <GridCard {...props}>{children}</GridCard>;
 };
-
-const Dot = styled(Box)`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  flex-shrink: 0;
-`;
-
 const Tag = styled(Box)`
   width: 70px;
   height: 25px;
@@ -179,7 +148,6 @@ export default function HomePage() {
   }
 
   const recentEmails = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
-  const todos = [{}, {}, {}, {}];
 
   return (
     <Layout padding={6}>
@@ -284,69 +252,7 @@ export default function HomePage() {
             </Box>
           </Card>
         </Main>
-        <Wrapper>
-          <Flex justifyContent="end">
-            <Box marginRight={2}>
-              <IconButton icon={<Calendar />} label="Calendar" />
-            </Box>
-            <Box marginRight={2}>
-              <IconButton icon={<Bell />} label="Notifications" />
-            </Box>
-            <Box marginRight={2}>
-              <IconButton icon={<Message />} label="Message" />
-            </Box>
-            <TextButton>
-              <Flex>
-                <Box marginRight={1}>
-                  <Avatar
-                    src="https://avatars.githubusercontent.com/u/3874873?v=4"
-                    alt="marvin frachet"
-                    preview
-                  />
-                </Box>
-                <ChevronDown />
-              </Flex>
-            </TextButton>
-          </Flex>
-          <Flex marginTop={4} direction="column" alignItems="stretch" flex="1">
-            <Typography variant="delta">Your to-Do list</Typography>
-            {todos.map((_, i) => (
-              <Card key={i} marginTop={i == 0 ? 6 : 1}>
-                <CardBody>
-                  <Box
-                    padding={2}
-                    style={{ borderRadius: 12 }}
-                    background="neutral200"
-                  >
-                    <Discuss />
-                  </Box>
-                  <CardContent paddingLeft={2}>
-                    <CardTitle>Run payroll</CardTitle>
-                    <CardSubtitle>Mar 4 at 6:00 pm</CardSubtitle>
-                  </CardContent>
-                  <CardBadge>high</CardBadge>
-                </CardBody>
-              </Card>
-            ))}
-            <Card marginTop="auto" padding={2}>
-              <Flex>
-                <Dot margin={2} background="primary500" />
-                <CardContent paddingLeft={2}>
-                  <CardTitle>Board meeting</CardTitle>
-                  <CardSubtitle>Feb 22 at 6:00 pm</CardSubtitle>
-                  <Typography
-                    variant="pi"
-                    textColor="neutral200"
-                    lineHeight={0}
-                  >
-                    You have been invited to attend a meeting of the Board
-                    Directors.
-                  </Typography>
-                </CardContent>
-              </Flex>
-            </Card>
-          </Flex>
-        </Wrapper>
+        <Sidebar />
       </Grid>
     </Layout>
   );
