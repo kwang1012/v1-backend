@@ -15,6 +15,7 @@ module.exports = (config, webpack) => {
   config.resolve.alias = {
     ...config.resolve.alias,
     moment$: path.dirname(require.resolve("moment")),
+    "react-chartjs-2$": path.dirname(require.resolve("react-chartjs-2")),
     components: path.resolve(__dirname, "components"),
   };
 

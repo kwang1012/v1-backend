@@ -1,12 +1,12 @@
 {
-  "name": "dashboard",
+  "name": "monitor",
   "version": "0.0.0",
   "description": "This is the description of the plugin.",
   "strapi": {
-    "name": "dashboard",
-    "description": "Description of Dashboard plugin",
+    "name": "monitor",
+    "description": "Description of Monitor plugin",
     "kind": "plugin",
-    "displayName": "Dashboard"
+    "displayName": "Monitor"
   },
   "dependencies": {},
   "author": {

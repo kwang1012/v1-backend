@@ -50,7 +50,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::post.post",
-      "inversedBy": "related_posts"
+      "mappedBy": "related_posts"
     }
   }
 }

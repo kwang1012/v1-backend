@@ -1,7 +1,7 @@
 module.exports = ({ env }) => ({
-  dashboard: {
-    enabled: false,
-    resolve: "./src/plugins/dashboard",
+  monitor: {
+    enabled: true,
+    resolve: "./src/plugins/monitor",
   },
   email: {
     config: {

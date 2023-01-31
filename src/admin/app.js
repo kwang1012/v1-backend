@@ -36,8 +36,7 @@ const config = {
   },
 };
 
-const bootstrap = (app) => {
-  console.log(app);
+const bootstrap = () => {
   document.title = "KKapp Admin";
 };
 

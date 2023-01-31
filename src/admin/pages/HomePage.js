@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { LoadingIndicatorPage } from "@strapi/helper-plugin";
 import { Box } from "@strapi/design-system/Box";
@@ -15,10 +15,11 @@ import ChartPie from "@strapi/icons/ChartPie";
 import Briefcase from "@strapi/icons/Briefcase";
 import Earth from "@strapi/icons/Earth";
 import File from "@strapi/icons/File";
-import ChevronLeft from "@strapi/icons/ChevronLeft";
-import ChevronRight from "@strapi/icons/ChevronRight";
 import { useModels } from "../../hooks";
 import Sidebar from "components/Sidebar";
+import Nav from "components/Nav";
+import RevenueChart from "components/RevenueChart";
+import axios from "axios";
 
 const Layout = styled(Box)`
   height: 100vh;
@@ -141,6 +142,32 @@ const headerItems = [
 ];
 
 export default function HomePage() {
+  // useEffect(() => {
+  //   axios
+  //     .get("https://api.github.com/users/kwang1012/events", {
+  //       auth: `bearer ${process.env.GITHUB_TOKEN}`,
+  //     })
+  //     .then(({ data: events }) => {
+  //       let lastCommit;
+  //       events.some((event) => {
+  //         return (
+  //           event.type === "PushEvent" &&
+  //           event.payload.commits.reverse().some((commit) => {
+  //             if (commit.author.email === "bruce1198@gmail.com") {
+  //               lastCommit = commit;
+
+  //               return true;
+  //             }
+
+  //             return false;
+  //           })
+  //         );
+  //       });
+  //       console.log(lastCommit);
+  //     })
+  //     .catch(console.log);
+  // }, []);
+
   const { isLoading: isLoadingForModels } = useModels();
 
   if (isLoadingForModels) {
@@ -153,15 +180,7 @@ export default function HomePage() {
     <Layout padding={6}>
       <Grid gap={6}>
         <Main>
-          <Flex justifyContent="space-between">
-            <Typography as="h2" variant="alpha">
-              Good morning, Kai!
-            </Typography>
-            <Box>
-              <ChevronLeft />
-              <ChevronRight />
-            </Box>
-          </Flex>
+          <Nav />
           <Box paddingTop={6}>
             <Grid gap={2}>
               {headerItems.map((headerItem, i) => (
@@ -206,6 +225,7 @@ export default function HomePage() {
                     Last 7 days VS prior week
                   </Typography>
                 </Flex>
+                <RevenueChart />
               </CustomGridItem>
               <CustomGridItem col={3} padding={3}>
                 <Typography variant="beta">Invoices overdue</Typography>
