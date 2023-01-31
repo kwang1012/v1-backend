@@ -15,12 +15,13 @@ import { IconButton } from "@strapi/design-system/IconButton";
 import { TextButton } from "@strapi/design-system/TextButton";
 import { Button } from "@strapi/design-system/Button";
 import { ProgressBar } from "@strapi/design-system/ProgressBar";
-import { Avatar } from "@strapi/design-system/Avatar";
+import { Initials } from "@strapi/design-system/Avatar";
 import ChevronDown from "@strapi/icons/ChevronDown";
 import Calendar from "@strapi/icons/Calendar";
 import Bell from "@strapi/icons/Bell";
 import Message from "@strapi/icons/Message";
 import Discuss from "@strapi/icons/Discuss";
+import { useAppInfos } from "@strapi/helper-plugin";
 
 const Wrapper = styled(Box)`
   padding: 12px;
@@ -51,9 +52,14 @@ const Dot = styled(Box)`
   flex-shrink: 0;
 `;
 
-export default function Sidebar() {
-  const todos = [{}, {}, {}, {}];
+export default function Sidebar({ todos }) {
+  const { userDisplayName } = useAppInfos();
 
+  const initials = userDisplayName
+    .split(" ")
+    .map((name) => name.substring(0, 1))
+    .join("")
+    .substring(0, 2);
   return (
     <Wrapper>
       <Flex justifyContent="end">
@@ -69,11 +75,7 @@ export default function Sidebar() {
         <TextButton>
           <Flex>
             <Box marginRight={1}>
-              <Avatar
-                src="https://avatars.githubusercontent.com/u/3874873?v=4"
-                alt="marvin frachet"
-                preview
-              />
+              <Initials>{initials}</Initials>
             </Box>
             <ChevronDown />
           </Flex>
@@ -102,7 +104,7 @@ export default function Sidebar() {
           <Button fullWidth>View status</Button>
         </Card>
         <Typography variant="delta">Your to-Do list</Typography>
-        {todos.map((_, i) => (
+        {todos.map((todo, i) => (
           <Card key={i} marginTop={i == 0 ? 6 : 1}>
             <CardBody>
               <Box
@@ -113,10 +115,10 @@ export default function Sidebar() {
                 <Discuss />
               </Box>
               <CardContent paddingLeft={2}>
-                <CardTitle>Run payroll</CardTitle>
-                <CardSubtitle>Mar 4 at 6:00 pm</CardSubtitle>
+                <CardTitle>{todo.title}</CardTitle>
+                <CardSubtitle>{todo.time}</CardSubtitle>
               </CardContent>
-              <CardBadge>high</CardBadge>
+              <CardBadge>{todo.priority}</CardBadge>
             </CardBody>
           </Card>
         ))}

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useMemo, useRef } from "react";
 import styled from "styled-components";
-import { LoadingIndicatorPage } from "@strapi/helper-plugin";
+import { LoadingIndicatorPage, request } from "@strapi/helper-plugin";
 import { Box } from "@strapi/design-system/Box";
 import { Card } from "@strapi/design-system/Card";
 import { Flex } from "@strapi/design-system/Flex";
@@ -19,7 +19,6 @@ import { useModels } from "../../hooks";
 import Sidebar from "components/Sidebar";
 import Nav from "components/Nav";
 import RevenueChart from "components/RevenueChart";
-import axios from "axios";
 
 const Layout = styled(Box)`
   height: 100vh;
@@ -49,11 +48,14 @@ const CustomGridItem = ({ children, ...props }) => {
   return <GridCard {...props}>{children}</GridCard>;
 };
 const Tag = styled(Box)`
-  width: 70px;
-  height: 25px;
-  line-height: 20px;
+  width: ${(props) => (props.small ? 60 : 70)}px;
+  height: ${(props) => (props.small ? 20 : 25)}px;
   border-radius: 4px;
   text-align: center;
+  & span {
+    color: inherit;
+    line-height: ${(props) => (props.small ? 20 : 25)}px;
+  }
 `;
 
 const Increased = styled(Tag)`
@@ -66,107 +68,109 @@ const Decreased = styled(Tag)`
   color: #eb092b;
 `;
 
-const headerItems = [
-  {
-    icon: <ChartPie width={40} height={40} />,
-    menuItems: [
-      {
-        title: "Make payment",
-      },
-      {
-        title: "View balance details",
-      },
-      {
-        title: "View account details",
-      },
-    ],
-    value: "$143,624",
-    description: "Your bank balance",
-  },
-  {
-    icon: <Briefcase width={40} height={40} />,
-    menuItems: [
-      {
-        title: "Make payment",
-      },
-      {
-        title: "View balance details",
-      },
-      {
-        title: "View account details",
-      },
-    ],
-    value: "$143,624",
-    description: "Todos on upcoming week",
-  },
-  {
-    icon: (
-      <Box>
-        <Earth width={38} height={38} />
-      </Box>
-    ),
-    menuItems: [
-      {
-        title: "Make payment",
-      },
-      {
-        title: "View balance details",
-      },
-      {
-        title: "View account details",
-      },
-    ],
-    value: "7",
-    description: "Visitors today",
-  },
-  {
-    icon: (
-      <Box style={{ paddingBottom: 2 }}>
-        <File width={36} height={36} />
-      </Box>
-    ),
-    menuItems: [
-      {
-        title: "Repo",
-      },
-      {
-        title: "View changes",
-      },
-      {
-        title: "View account details",
-      },
-    ],
-    value: "+27,382",
-    description: "LoC updated this week",
-  },
-];
-
 export default function HomePage() {
-  // useEffect(() => {
-  //   axios
-  //     .get("https://api.github.com/users/kwang1012/events", {
-  //       auth: `bearer ${process.env.GITHUB_TOKEN}`,
-  //     })
-  //     .then(({ data: events }) => {
-  //       let lastCommit;
-  //       events.some((event) => {
-  //         return (
-  //           event.type === "PushEvent" &&
-  //           event.payload.commits.reverse().some((commit) => {
-  //             if (commit.author.email === "bruce1198@gmail.com") {
-  //               lastCommit = commit;
-
-  //               return true;
-  //             }
-
-  //             return false;
-  //           })
-  //         );
-  //       });
-  //       console.log(lastCommit);
-  //     })
-  //     .catch(console.log);
-  // }, []);
+  const [LoC, setLoC] = useState({ additions: 0, deletions: 0 });
+  const todos = useRef([
+    {
+      title: "Pipeline Parallelism",
+      time: "Feb 4 at 6:00pm",
+      priority: "high",
+      icon: null,
+    },
+    {
+      title: "I-20 VISA",
+      time: "Mar 4 at 6:00pm",
+      priority: "high",
+    },
+    {
+      title: "Buy a new luggage",
+      time: "Mar 4 at 6:00pm",
+      priority: "low",
+    },
+    {
+      title: "Run payroll",
+      time: "Mar 4 at 6:00pm",
+      priority: "high",
+    },
+  ]);
+  const headerItems = useMemo(
+    () => [
+      {
+        icon: <ChartPie width={40} height={40} />,
+        menuItems: [
+          {
+            title: "Make payment",
+          },
+          {
+            title: "View balance details",
+          },
+          {
+            title: "View account details",
+          },
+        ],
+        value: "$143,624",
+        description: "Your bank balance",
+      },
+      {
+        icon: <Briefcase width={40} height={40} />,
+        menuItems: [
+          {
+            title: "View details",
+          },
+        ],
+        value: todos.current.length.toString(),
+        description: "Todos on upcoming week",
+      },
+      {
+        icon: (
+          <Box>
+            <Earth width={38} height={38} />
+          </Box>
+        ),
+        menuItems: [
+          {
+            title: "View details",
+            onClick: () =>
+              window.open("https://clustrmaps.com/site/1bs6h", "_blank"),
+          },
+        ],
+        value: "7",
+        description: "Visitors today",
+      },
+      {
+        icon: (
+          <Box style={{ paddingBottom: 2 }}>
+            <File width={36} height={36} />
+          </Box>
+        ),
+        menuItems: [
+          {
+            title: "Repo",
+            onClick: () =>
+              window.open("https://github.com/kwang1012/v1", "_blank"),
+          },
+          {
+            title: "View changes",
+          },
+        ],
+        value: (
+          <Flex>
+            <Increased small>
+              <Typography variant="pi">+ {LoC.additions}</Typography>
+            </Increased>
+            <Decreased marginLeft={1} small>
+              <Typography variant="pi">+ {LoC.deletions}</Typography>
+            </Decreased>
+          </Flex>
+        ),
+        description: "LoC updated this week",
+      },
+    ],
+    [LoC]
+  );
+  useEffect(() => {
+    request("/monitor/github/loc").then((data) => setLoC(data));
+  }, []);
 
   const { isLoading: isLoadingForModels } = useModels();
 
@@ -193,12 +197,18 @@ export default function HomePage() {
                       label="More"
                     >
                       {headerItem.menuItems.map((menuItem, mid) => (
-                        <MenuItem key={mid}>{menuItem.title}</MenuItem>
+                        <MenuItem key={mid} onClick={menuItem.onClick}>
+                          {menuItem.title}
+                        </MenuItem>
                       ))}
                     </SimpleMenu>
                   </Flex>
                   <Box paddingTop={2} paddingBottom={2}>
-                    <Typography variant="beta">{headerItem.value}</Typography>
+                    {typeof headerItem.value === "string" ? (
+                      <Typography variant="beta">{headerItem.value}</Typography>
+                    ) : (
+                      headerItem.value
+                    )}
                   </Box>
                   <Typography>{headerItem.description}</Typography>
                 </CustomGridItem>
@@ -272,7 +282,7 @@ export default function HomePage() {
             </Box>
           </Card>
         </Main>
-        <Sidebar />
+        <Sidebar todos={todos.current} />
       </Grid>
     </Layout>
   );

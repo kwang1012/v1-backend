@@ -10,5 +10,14 @@ module.exports = {
         auth: false,
       },
     },
+    {
+      method: "GET",
+      path: "/github/loc",
+      handler: "github.getLoCUpdated",
+      config: {
+        policies: [],
+        auth: false,
+      },
+    },
   ],
 };
