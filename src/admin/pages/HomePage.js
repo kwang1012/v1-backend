@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, useRef } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import { LoadingIndicatorPage, request } from "@strapi/helper-plugin";
 import { Box } from "@strapi/design-system/Box";
@@ -19,6 +19,7 @@ import { useModels } from "../../hooks";
 import Sidebar from "components/Sidebar";
 import Nav from "components/Nav";
 import RevenueChart from "components/RevenueChart";
+import { normalize } from "utils";
 
 const Layout = styled(Box)`
   height: 100vh;
@@ -70,29 +71,7 @@ const Decreased = styled(Tag)`
 
 export default function HomePage() {
   const [LoC, setLoC] = useState({ additions: 0, deletions: 0 });
-  const todos = useRef([
-    {
-      title: "Pipeline Parallelism",
-      time: "Feb 4 at 6:00pm",
-      priority: "high",
-      icon: null,
-    },
-    {
-      title: "I-20 VISA",
-      time: "Mar 4 at 6:00pm",
-      priority: "high",
-    },
-    {
-      title: "Buy a new luggage",
-      time: "Mar 4 at 6:00pm",
-      priority: "low",
-    },
-    {
-      title: "Run payroll",
-      time: "Mar 4 at 6:00pm",
-      priority: "high",
-    },
-  ]);
+  const [todos, setTodos] = useState([]);
   const headerItems = useMemo(
     () => [
       {
@@ -118,7 +97,7 @@ export default function HomePage() {
             title: "View details",
           },
         ],
-        value: todos.current.length.toString(),
+        value: todos.length.toString(),
         description: "Todos on upcoming week",
       },
       {
@@ -166,10 +145,11 @@ export default function HomePage() {
         description: "LoC updated this week",
       },
     ],
-    [LoC]
+    [LoC, todos.length]
   );
   useEffect(() => {
     request("/monitor/github/loc").then((data) => setLoC(data));
+    request("/monitor/todos").then((data) => setTodos(normalize(data)));
   }, []);
 
   const { isLoading: isLoadingForModels } = useModels();
@@ -282,7 +262,7 @@ export default function HomePage() {
             </Box>
           </Card>
         </Main>
-        <Sidebar todos={todos.current} />
+        <Sidebar todos={todos} />
       </Grid>
     </Layout>
   );

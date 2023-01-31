@@ -22,6 +22,7 @@ import Bell from "@strapi/icons/Bell";
 import Message from "@strapi/icons/Message";
 import Discuss from "@strapi/icons/Discuss";
 import { useAppInfos } from "@strapi/helper-plugin";
+import moment from "moment";
 
 const Wrapper = styled(Box)`
   padding: 12px;
@@ -116,7 +117,9 @@ export default function Sidebar({ todos }) {
               </Box>
               <CardContent paddingLeft={2}>
                 <CardTitle>{todo.title}</CardTitle>
-                <CardSubtitle>{todo.time}</CardSubtitle>
+                <CardSubtitle>
+                  {moment(todo.due).format("MMM D [at] H:mmA")}
+                </CardSubtitle>
               </CardContent>
               <CardBadge>{todo.priority}</CardBadge>
             </CardBody>

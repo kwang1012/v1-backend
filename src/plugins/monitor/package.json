@@ -1,10 +1,10 @@
 {
   "name": "monitor",
   "version": "0.0.0",
-  "description": "This is the description of the plugin.",
+  "description": "Custom dashboard management.",
   "strapi": {
     "name": "monitor",
-    "description": "Description of Monitor plugin",
+    "description": "Custom dashboard management.",
     "kind": "plugin",
     "displayName": "Monitor"
   },

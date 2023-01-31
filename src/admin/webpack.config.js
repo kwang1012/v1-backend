@@ -17,6 +17,7 @@ module.exports = (config, webpack) => {
     moment$: path.dirname(require.resolve("moment")),
     "react-chartjs-2$": path.dirname(require.resolve("react-chartjs-2")),
     components: path.resolve(__dirname, "components"),
+    utils: path.resolve(__dirname, "utils"),
   };
 
   config.module.rules.push({
