@@ -56,11 +56,7 @@
       ]
     },
     "content": {
-      "type": "customField",
-      "options": {
-        "preset": "rich"
-      },
-      "customField": "plugin::ckeditor.CKEditor"
+      "type": "richtext"
     }
   }
 }
