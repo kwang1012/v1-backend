@@ -1,0 +1,24 @@
+{
+  "kind": "collectionType",
+  "collectionName": "boards",
+  "info": {
+    "singularName": "board",
+    "pluralName": "boards",
+    "displayName": "Board"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "todos": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::monitor.todo",
+      "inversedBy": "todo"
+    }
+  }
+}

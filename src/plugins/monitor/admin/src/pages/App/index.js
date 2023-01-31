@@ -5,17 +5,20 @@
  *
  */
 
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { NotFound } from '@strapi/helper-plugin';
-import pluginId from '../../pluginId';
-import HomePage from '../HomePage';
+import React, { useEffect } from "react";
+import { Switch, Route } from "react-router-dom";
+import { NotFound } from "@strapi/helper-plugin";
+import pluginId from "../../pluginId";
+import HomePage from "../HomePage";
 
 const App = () => {
+  useEffect(() => {
+    document.title = "Monitor";
+  }, []);
   return (
     <div>
       <Switch>
-        <Route path={`/plugins/${pluginId}`} component={HomePage} exact />
+        <Route path={`/plugins/${pluginId}`} component={HomePage} />
         <Route component={NotFound} />
       </Switch>
     </div>

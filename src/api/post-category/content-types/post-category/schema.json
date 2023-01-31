@@ -4,10 +4,11 @@
   "info": {
     "singularName": "post-category",
     "pluralName": "post-categories",
-    "displayName": "Post Category"
+    "displayName": "Post Category",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {

@@ -20,6 +20,7 @@ import Sidebar from "components/Sidebar";
 import Nav from "components/Nav";
 import RevenueChart from "components/RevenueChart";
 import { normalize } from "utils";
+import { useHistory } from "react-router-dom";
 
 const Layout = styled(Box)`
   height: 100vh;
@@ -72,6 +73,7 @@ const Decreased = styled(Tag)`
 export default function HomePage() {
   const [LoC, setLoC] = useState({ additions: 0, deletions: 0 });
   const [todos, setTodos] = useState([]);
+  const history = useHistory();
   const headerItems = useMemo(
     () => [
       {
@@ -95,6 +97,7 @@ export default function HomePage() {
         menuItems: [
           {
             title: "View details",
+            onClick: () => history.push({ pathname: "/plugins/monitor/todo" }),
           },
         ],
         value: todos.length.toString(),
