@@ -155,7 +155,9 @@ export default function HomePage() {
   );
   useEffect(() => {
     let isMounted = true;
-    request("/monitor/github/loc").then((data) => isMounted && setLoC(data));
+    request("/monitor/github/loc?type=week").then(
+      (data) => isMounted && setLoC(data)
+    );
     request("/monitor/todos").then(
       (data) => isMounted & setTodos(normalize(data))
     );

@@ -9,7 +9,9 @@
     "displayName": "Monitor"
   },
   "dependencies": {
-    "react-beautiful-dnd": "^13.1.1"
+    "prism-themes": "^1.9.0",
+    "react-beautiful-dnd": "^13.1.1",
+    "react-diff-view": "^2.5.0"
   },
   "author": {
     "name": "A Strapi developer"
