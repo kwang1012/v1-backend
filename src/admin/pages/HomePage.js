@@ -21,6 +21,7 @@ import Nav from "components/Nav";
 import RevenueChart from "components/RevenueChart";
 import { normalize } from "utils";
 import { useHistory } from "react-router-dom";
+import moment from "moment";
 
 const Layout = styled(Box)`
   height: 100vh;
@@ -73,6 +74,7 @@ const Decreased = styled(Tag)`
 export default function HomePage() {
   const [LoC, setLoC] = useState({ additions: 0, deletions: 0 });
   const [todos, setTodos] = useState([]);
+  const [visitors, setVisitors] = useState([]);
   const history = useHistory();
   const headerItems = useMemo(
     () => [
@@ -113,10 +115,10 @@ export default function HomePage() {
           {
             title: "View details",
             onClick: () =>
-              window.open("https://clustrmaps.com/site/1bs6h", "_blank"),
+              history.push({ pathname: "/plugins/monitor/visitors" }),
           },
         ],
-        value: "7",
+        value: visitors.length.toString(),
         description: "Visitors today",
       },
       {
@@ -132,7 +134,8 @@ export default function HomePage() {
               window.open("https://github.com/kwang1012/v1", "_blank"),
           },
           {
-            title: "View changes",
+            title: "View details",
+            onClick: () => history.push({ pathname: "/plugins/monitor/repos" }),
           },
         ],
         value: (
@@ -148,11 +151,22 @@ export default function HomePage() {
         description: "LoC updated this week",
       },
     ],
-    [LoC, todos.length]
+    [LoC, todos.length, visitors.length]
   );
   useEffect(() => {
-    request("/monitor/github/loc").then((data) => setLoC(data));
-    request("/monitor/todos").then((data) => setTodos(normalize(data)));
+    let isMounted = true;
+    request("/monitor/github/loc").then((data) => isMounted && setLoC(data));
+    request("/monitor/todos").then(
+      (data) => isMounted & setTodos(normalize(data))
+    );
+    request(
+      `/api/monitor/visitors?filters[createdAt][$gte]=${moment()
+        .startOf("day")
+        .toISOString()}`
+    ).then((data) => isMounted && setVisitors(normalize(data)));
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   const { isLoading: isLoadingForModels } = useModels();

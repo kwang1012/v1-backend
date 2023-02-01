@@ -25,8 +25,18 @@ import Repos from "../../components/Repos";
 const Layout = styled(Box)`
   flex: 1;
   min-height: 100vh;
-  padding: 24px;
   background: white;
+  overflow-x: auto;
+  position: relative;
+  & > div {
+    padding: 24px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    overflow: auto;
+  }
 `;
 
 const HomePage = () => {
@@ -88,12 +98,14 @@ const HomePage = () => {
         </SubNavSections>
       </SubNav>
       <Layout>
-        <Switch>
-          <Route path={"/plugins/monitor/todo"} component={Todo} />
-          <Route path={"/plugins/monitor/visitors"} component={Visitors} />
-          <Route path={"/plugins/monitor/repos"} component={Repos} />
-          <Route component={Overview} />
-        </Switch>
+        <div>
+          <Switch>
+            <Route path={"/plugins/monitor/todo"} component={Todo} />
+            <Route path={"/plugins/monitor/visitors"} component={Visitors} />
+            <Route path={"/plugins/monitor/repos"} component={Repos} />
+            <Route component={Overview} />
+          </Switch>
+        </div>
       </Layout>
     </Flex>
   );
