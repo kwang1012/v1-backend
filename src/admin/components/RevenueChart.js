@@ -32,10 +32,6 @@ const options = {
     legend: {
       position: "top",
     },
-    // title: {
-    //   display: true,
-    //   text: "Chart.js Line Chart",
-    // },
   },
   maintainAspectRatio: false,
 };
@@ -50,12 +46,14 @@ const data = {
       data: labels.map(() => Math.floor(0 + 2000 * Math.random())),
       borderColor: "rgb(255, 99, 132)",
       backgroundColor: "rgba(255, 99, 132, 0.5)",
+      cubicInterpolationMode: "monotone",
     },
     {
       label: "Prior week",
       data: labels.map(() => Math.floor(0 + 2000 * Math.random())),
       borderColor: "rgb(53, 162, 235)",
       backgroundColor: "rgba(53, 162, 235, 0.5)",
+      cubicInterpolationMode: "monotone",
     },
   ],
 };
