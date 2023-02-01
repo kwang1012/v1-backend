@@ -1,5 +1,6 @@
+"use strict";
+
 module.exports = {
-  github: require("./github"),
-  todo: require("./todo"),
-  board: require("./board"),
+  admin: require("./admin"),
+  "content-api": require("./content-api"),
 };

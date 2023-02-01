@@ -1,0 +1,57 @@
+{
+  "kind": "collectionType",
+  "collectionName": "visitors",
+  "info": {
+    "singularName": "visitor",
+    "pluralName": "visitors",
+    "displayName": "Visitor"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "comment": ""
+  },
+  "attributes": {
+    "city": {
+      "type": "string"
+    },
+    "city_geoname_id": {
+      "type": "integer"
+    },
+    "continent": {
+      "type": "string"
+    },
+    "continent_code": {
+      "type": "string"
+    },
+    "continent_geoname_id": {
+      "type": "integer"
+    },
+    "country": {
+      "type": "string"
+    },
+    "country_code": {
+      "type": "string"
+    },
+    "country_geoname_id": {
+      "type": "integer"
+    },
+    "currency": {
+      "type": "json"
+    },
+    "flag": {
+      "type": "json"
+    },
+    "ip_address": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "float"
+    },
+    "longitude": {
+      "type": "float"
+    },
+    "timezone": {
+      "type": "json"
+    }
+  }
+}
