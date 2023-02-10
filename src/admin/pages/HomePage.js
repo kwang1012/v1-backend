@@ -144,7 +144,7 @@ export default function HomePage() {
               <Typography variant="pi">+ {LoC.additions}</Typography>
             </Increased>
             <Decreased marginLeft={1} small>
-              <Typography variant="pi">+ {LoC.deletions}</Typography>
+              <Typography variant="pi">- {LoC.deletions}</Typography>
             </Decreased>
           </Flex>
         ),

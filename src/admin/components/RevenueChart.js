@@ -33,6 +33,20 @@ const options = {
       position: "top",
     },
   },
+  scales: {
+    x: {
+      grid: {
+        display: false,
+      },
+      ticks: {
+        maxTicksLimit: 20,
+      },
+    },
+  },
+  scaleOverride: true,
+  scaleSteps: 5,
+  scaleStepWidth: 20,
+  scaleStartValue: 0,
   maintainAspectRatio: false,
 };
 
@@ -44,8 +58,8 @@ const data = {
     {
       label: "Last 7 days",
       data: labels.map(() => Math.floor(0 + 2000 * Math.random())),
-      borderColor: "rgb(255, 99, 132)",
-      backgroundColor: "rgba(255, 99, 132, 0.5)",
+      borderColor: "rgb(204, 51, 99)",
+      backgroundColor: "rgba(204, 51, 99, 0.5)",
       cubicInterpolationMode: "monotone",
     },
     {
