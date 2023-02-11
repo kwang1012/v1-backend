@@ -1,8 +1,19 @@
 import React from "react";
 import styled from "styled-components";
-import { Flex, Box, Initials } from "@strapi/design-system";
+import { Flex, Box, Initials, Typography } from "@strapi/design-system";
 import { CheckCircle } from "@strapi/icons";
 import { Draggable } from "react-beautiful-dnd";
+
+const Avatar = styled("div")`
+  background: #bf2857;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  color: white;
+  line-height: 24px;
+  text-align: center;
+  font-size: 0.7rem;
+`;
 
 const TodoCard = ({
   todo,
@@ -36,8 +47,10 @@ const TodoCard = ({
                 {todo.title}
               </Flex>
               <Flex justifyContent="space-between" marginTop={6}>
-                <Initials>KW</Initials>
-                <Box>2</Box>
+                <Avatar>KW</Avatar>
+                <Box>
+                  <Typography variant="pi">2</Typography>
+                </Box>
               </Flex>
             </StyledTodoCard>
           </div>

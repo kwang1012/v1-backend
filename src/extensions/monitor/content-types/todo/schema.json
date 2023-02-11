@@ -4,7 +4,8 @@
   "info": {
     "singularName": "todo",
     "pluralName": "todos",
-    "displayName": "Todo"
+    "displayName": "Todo",
+    "description": ""
   },
   "options": {
     "draftAndPublish": false,
@@ -30,6 +31,9 @@
       "relation": "manyToOne",
       "target": "plugin::monitor.board",
       "inversedBy": "todos"
+    },
+    "order": {
+      "type": "integer"
     }
   }
 }

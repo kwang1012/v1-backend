@@ -10,6 +10,47 @@ import { Dialog, DialogBody, DialogFooter } from "@strapi/design-system";
 import { request } from "@strapi/helper-plugin";
 import { normalize } from "utils";
 
+const Container = styled("div")`
+  width: 100%;
+  overflow: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background-color: #eaebec;
+    border-radius: 10px;
+  }
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px 10px #cacccb;
+  }
+`;
+
+const AddButton = styled(Button)`
+  border: 1px #ccc dashed;
+  border-radius: 12px;
+  background: #f9f9f9;
+  color: #1c1c1c;
+  height: ${(props) => (props.large ? "8em" : "2.5em")};
+  & span {
+    display: flex;
+    align-items: center;
+  }
+  & svg {
+    margin-right: 5px;
+  }
+  &::after {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+`;
+
 const Board = ({
   id,
   title,
@@ -41,7 +82,12 @@ const Board = ({
   };
 
   return (
-    <div>
+    <Flex
+      direction="column"
+      alignItems="stretch"
+      height="100%"
+      overflow="hidden"
+    >
       <Flex justifyContent="space-between" alignItems="center" marginBottom={4}>
         <Typography variant="beta">{title}</Typography>
         <Flex>
@@ -56,23 +102,38 @@ const Board = ({
           </SimpleMenu>
         </Flex>
       </Flex>
-      <Droppable droppableId={id.toString()}>
-        {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
-            {items.map((item, i) => (
-              <TodoCard
-                key={i}
-                index={i}
-                todo={item}
-                updateCard={updateCard}
-                removeCard={removeCard}
-              />
-            ))}
-            {provided.placeholder}
-          </div>
-        )}
-      </Droppable>
+      <Container>
+        <Droppable droppableId={id.toString()}>
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              style={{ minHeight: 1, paddingTop: 1 }}
+            >
+              {items.map((item, i) => (
+                <TodoCard
+                  key={i}
+                  index={i}
+                  todo={item}
+                  updateCard={updateCard}
+                  removeCard={removeCard}
+                />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </Container>
 
+      <AddButton
+        fullWidth
+        variant="ghost"
+        large={items.length === 0}
+        onClick={() => setIsVisible(true)}
+      >
+        <Plus />
+        Add Task
+      </AddButton>
       <Dialog
         onClose={() => setIsVisible(false)}
         title="Create a Todo"
@@ -101,32 +162,8 @@ const Board = ({
           }
         />
       </Dialog>
-      <AddButton
-        fullWidth
-        variant="ghost"
-        large={items.length === 0}
-        onClick={() => setIsVisible(true)}
-      >
-        <Plus />
-        Add Task
-      </AddButton>
-    </div>
+    </Flex>
   );
 };
-
-const AddButton = styled(Button)`
-  border: 1px #ccc dashed;
-  border-radius: 12px;
-  background: #f9f9f9;
-  color: #1c1c1c;
-  height: ${(props) => (props.large ? "8em" : "2.5em")};
-  & span {
-    display: flex;
-    align-items: center;
-  }
-  & svg {
-    margin-right: 5px;
-  }
-`;
 
 export default Board;
