@@ -19,4 +19,13 @@ module.exports = [
       auth: false,
     },
   },
+  {
+    method: "POST",
+    path: "/boards/update",
+    handler: "board.updateStatus",
+    config: {
+      policies: [],
+      auth: false,
+    },
+  },
 ];

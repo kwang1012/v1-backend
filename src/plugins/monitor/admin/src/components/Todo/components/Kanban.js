@@ -46,7 +46,7 @@ const AutoGrid = (props) => (
 
 export default function Kanban() {
   useEffect(() => {
-    request("/monitor/boards?populate[0]=todos&sort[0]=id").then((data) =>
+    request("/monitor/boards?populate[0]=todos&sort[0]=order").then((data) =>
       setBoards(normalize(data))
     );
   }, []);
@@ -90,14 +90,14 @@ export default function Kanban() {
       updatedTodo
     );
     tempData[sourceBoardIdx].todos.splice(source.index, 1);
-    request(`/monitor/todos/${updatedTodo.id}`, {
-      method: "PUT",
-      body: {
-        data: {
-          board: destination.droppableId,
-        },
-      },
-    });
+    // request(`/monitor/todos/${updatedTodo.id}`, {
+    //   method: "PUT",
+    //   body: {
+    //     data: {
+    //       board: destination.droppableId,
+    //     },
+    //   },
+    // });
 
     return tempData;
   };
@@ -152,7 +152,19 @@ export default function Kanban() {
 
   useEffect(() => {
     // TODO update db
-    // localStorage.setItem("kanban-board", JSON.stringify(data));
+    const trimBoards = boards.map((board, bid) => ({
+      id: board.id,
+      order: bid,
+      ts: board.todos.map((todo, tid) => ({
+        id: todo.id,
+        order: tid,
+        bid: board.id,
+      })),
+    }));
+    request("/monitor/boards/update", {
+      method: "POST",
+      body: { data: trimBoards },
+    });
   }, [boards]);
   return (
     <DragDropContext onDragEnd={onDragEnd}>

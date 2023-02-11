@@ -20,6 +20,9 @@
       "relation": "oneToMany",
       "target": "plugin::monitor.todo",
       "mappedBy": "board"
+    },
+    "order": {
+      "type": "integer"
     }
   }
 }
