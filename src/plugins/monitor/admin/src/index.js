@@ -30,6 +30,31 @@ export default {
         // },
       ],
     });
+    app.createSettingSection(
+      {
+        id: "monitor.setting",
+        intlLabel: { id: "monitor.label", defaultMessage: "Monitor Plugin" },
+      }, // Section to create
+      [
+        // links
+        {
+          intlLabel: {
+            id: "monitor.setting.configuration.label",
+            defaultMessage: "Configuration",
+          },
+          id: "monitor.setting.configuration",
+          to: "/settings/monitor",
+          Component: async () => {
+            const component = await import(
+              /* webpackChunkName: "users-providers-settings-page" */ "./pages/Settings"
+            );
+
+            return component;
+          },
+          permissions: [],
+        },
+      ]
+    );
     app.registerPlugin({
       id: "monitor",
       initializer: Initializer,

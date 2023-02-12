@@ -16,7 +16,7 @@ const GridItem = ({ ...props }) => {
   );
 };
 
-const StyledGridItem = styled("div")`
+const StyledGridItem = styled.div`
   width: 100%;
   aspect-ratio: 2/1;
   background-color: #ccc;

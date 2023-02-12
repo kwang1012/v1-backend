@@ -16,6 +16,17 @@ module.exports = createCoreController("plugin::monitor.todo", {
     });
     return this.transformResponse(entry);
   },
+  async findOne(ctx) {
+    const entry = await strapi.db.query("plugin::monitor.todo").findOne({
+      where: {
+        id: ctx.params.id,
+      },
+      populate: {
+        board: true,
+      },
+    });
+    return this.transformResponse(entry);
+  },
   async update(ctx) {
     const entry = await strapi.db.query("plugin::monitor.todo").update({
       ...ctx.request.body,

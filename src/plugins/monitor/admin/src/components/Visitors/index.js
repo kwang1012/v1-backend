@@ -37,7 +37,7 @@ const Decreased = styled(Tag)`
   color: #eb092b;
 `;
 
-const Divider = styled("div")`
+const Divider = styled.div`
   align-self: stretch;
   width: 1px;
   background: #ddd;

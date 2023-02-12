@@ -27,8 +27,8 @@ export default function Visitors() {
         </Select>
       </Box>
       <Switch>
-        <Route path="/plugins/monitor/repos" component={CommitList} exact />
-        <Route path="/plugins/monitor/repos/:sha" component={Detail} />
+        <Route path="/plugins/monitor/repo" component={CommitList} exact />
+        <Route path="/plugins/monitor/repo/:sha" component={Detail} />
       </Switch>
     </>
   );

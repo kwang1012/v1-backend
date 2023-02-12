@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import styled from "styled-components";
 import { useLocation, useHistory, Switch, Route } from "react-router-dom";
 import {
@@ -16,11 +16,13 @@ import {
   Flex,
   Box,
 } from "@strapi/design-system";
+import { request } from "@strapi/helper-plugin";
 import { BulletList, Apps, Earth, Code } from "@strapi/icons";
 import Todo from "../../components/Todo";
 import Overview from "../../components/Overview";
 import Visitors from "../../components/Visitors";
 import Repos from "../../components/Repos";
+import createProvidersArray from "../Settings/utils/createProvidersArray";
 
 const Layout = styled(Box)`
   flex: 1;
@@ -70,6 +72,27 @@ const HomePage = () => {
     }
   }, [location.pathname]);
 
+  const [providers, setProviders] = useState({});
+  const activeProviders = useMemo(
+    () =>
+      createProvidersArray(providers).filter((provider) => provider.enabled),
+    [providers]
+  );
+  useEffect(() => {
+    request("/monitor/providers").then((data) => setProviders(data));
+  }, []);
+  const getIcon = (provider) => {
+    switch (provider.name) {
+      case "todo":
+        return <BulletList />;
+      case "repo":
+        return <Code />;
+      case "visitor":
+        return <Earth />;
+    }
+    return null;
+  };
+
   return (
     <Flex alignItems="start">
       <SubNav ariaLabel="Monitor sub nav">
@@ -84,14 +107,16 @@ const HomePage = () => {
             Overview
           </SubNavLink>
           <SubNavSection label="Application">
-            {links.map((link) => (
+            {activeProviders.map((provider, i) => (
               <SubNavLink
-                to={link.to}
-                withBullet={location.pathname === link.to}
-                icon={link.icon}
-                key={link.id}
+                to={`/plugins/monitor/${provider.name}`}
+                withBullet={
+                  location.pathname === `/plugins/monitor/${provider.name}`
+                }
+                icon={getIcon(provider)}
+                key={i}
               >
-                {link.label}
+                {provider.name}
               </SubNavLink>
             ))}
           </SubNavSection>
@@ -101,8 +126,8 @@ const HomePage = () => {
         <div>
           <Switch>
             <Route path={"/plugins/monitor/todo"} component={Todo} />
-            <Route path={"/plugins/monitor/visitors"} component={Visitors} />
-            <Route path={"/plugins/monitor/repos"} component={Repos} />
+            <Route path={"/plugins/monitor/visitor"} component={Visitors} />
+            <Route path={"/plugins/monitor/repo"} component={Repos} />
             <Route component={Overview} />
           </Switch>
         </div>
