@@ -1,27 +1,18 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { LoadingIndicatorPage, request } from "@strapi/helper-plugin";
 import { Box } from "@strapi/design-system/Box";
 import { Card } from "@strapi/design-system/Card";
-import { Flex } from "@strapi/design-system/Flex";
-import { Typography } from "@strapi/design-system/Typography";
 import { Grid } from "@strapi/design-system/Grid";
-import { SimpleMenu, MenuItem } from "@strapi/design-system/SimpleMenu";
-import { IconButton } from "@strapi/design-system/IconButton";
-import { Table, Tbody, Tr, Td } from "@strapi/design-system/Table";
-import { Avatar } from "@strapi/design-system/Avatar";
-import More from "@strapi/icons/More";
-import ChartPie from "@strapi/icons/ChartPie";
-import Briefcase from "@strapi/icons/Briefcase";
-import Earth from "@strapi/icons/Earth";
-import File from "@strapi/icons/File";
+import MenuBurger from "@strapi/icons/MenuBurger";
 import { useModels } from "../../hooks";
 import Sidebar from "components/Sidebar";
 import Nav from "components/Nav";
-import RevenueChart from "components/RevenueChart";
 import { normalize } from "utils";
-import { useHistory } from "react-router-dom";
 import moment from "moment";
+import { DraggableContainer, DraggableItem } from "components/GridLayout";
+import { InfoProvider } from "components/InfoContext";
+import Section from "components/Section";
 
 const Layout = styled(Box)`
   height: 100vh;
@@ -38,134 +29,46 @@ const Main = styled(Box)`
   }
 `;
 
-const MoreVert = styled(More)`
-  transform: rotate(90deg);
-`;
-
-const GridCard = styled(Card)`
-  grid-column: span ${(props) => props.col};
-  grid-row: span ${(props) => props.row};
-`;
-
-const CustomGridItem = ({ children, ...props }) => {
-  return <GridCard {...props}>{children}</GridCard>;
-};
-const Tag = styled(Box)`
-  width: ${(props) => (props.small ? 60 : 70)}px;
-  height: ${(props) => (props.small ? 20 : 25)}px;
-  border-radius: 4px;
-  text-align: center;
-  & span {
-    color: inherit;
-    line-height: ${(props) => (props.small ? 20 : 25)}px;
+const Handle = styled.div`
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  cursor: move;
+  transform: translateX(-50%) scaleX(2);
+  font-size: 30px;
+  & path {
+    fill: rgba(0, 0, 0, 0.4);
   }
-`;
-
-const Increased = styled(Tag)`
-  background-color: #e2fbda;
-  color: #3fe015;
-`;
-
-const Decreased = styled(Tag)`
-  background-color: #ffdadf;
-  color: #eb092b;
 `;
 
 export default function HomePage() {
   const [LoC, setLoC] = useState({ additions: 0, deletions: 0 });
   const [todos, setTodos] = useState([]);
   const [visitors, setVisitors] = useState([]);
-  const history = useHistory();
-  const headerItems = useMemo(
-    () => [
-      {
-        icon: <ChartPie width={40} height={40} />,
-        menuItems: [
-          {
-            title: "Make payment",
-          },
-          {
-            title: "View balance details",
-          },
-          {
-            title: "View account details",
-          },
-        ],
-        value: "$143,624",
-        description: "Your bank balance",
-      },
-      {
-        icon: <Briefcase width={40} height={40} />,
-        menuItems: [
-          {
-            title: "View details",
-            onClick: () => history.push({ pathname: "/plugins/monitor/todo" }),
-          },
-        ],
-        value: todos.length.toString(),
-        description: "Todos on upcoming week",
-      },
-      {
-        icon: (
-          <Box>
-            <Earth width={38} height={38} />
-          </Box>
-        ),
-        menuItems: [
-          {
-            title: "View details",
-            onClick: () =>
-              history.push({ pathname: "/plugins/monitor/visitors" }),
-          },
-        ],
-        value: visitors.length.toString(),
-        description: "Visitors today",
-      },
-      {
-        icon: (
-          <Box style={{ paddingBottom: 2 }}>
-            <File width={36} height={36} />
-          </Box>
-        ),
-        menuItems: [
-          {
-            title: "Repo",
-            onClick: () =>
-              window.open("https://github.com/kwang1012/v1", "_blank"),
-          },
-          {
-            title: "View details",
-            onClick: () => history.push({ pathname: "/plugins/monitor/repos" }),
-          },
-        ],
-        value: (
-          <Flex>
-            <Increased small>
-              <Typography variant="pi">+ {LoC.additions}</Typography>
-            </Increased>
-            <Decreased marginLeft={1} small>
-              <Typography variant="pi">- {LoC.deletions}</Typography>
-            </Decreased>
-          </Flex>
-        ),
-        description: "LoC updated this week",
-      },
-    ],
-    [LoC, todos.length, visitors.length]
-  );
+  const [layout, setLayout] = useState([]);
+  const [fetching, setFetching] = useState(false);
+
   useEffect(() => {
     let isMounted = true;
-    request("/monitor/github/loc?type=week").then(
-      (data) => isMounted && setLoC(data)
-    );
-    request("/monitor/todos").then(
-      (data) => isMounted & setTodos(normalize(data))
-    );
-    request(
-      `/api/monitor/visitors?filters[createdAt][$gte]=${moment()
-        .startOf("day")
-        .toISOString()}`
-    ).then((data) => isMounted && setVisitors(normalize(data)));
+
+    // layout query
+    setFetching(true);
+
+    const fetchData = Promise.all([
+      request("/api/layout").then((data) => isMounted && setLayout(data)),
+      request("/monitor/github/loc?type=week").then(
+        (data) => isMounted && setLoC(data)
+      ),
+      request("/monitor/todos").then(
+        (data) => isMounted & setTodos(normalize(data))
+      ),
+      request(
+        `/api/monitor/visitors?filters[createdAt][$gte]=${moment()
+          .startOf("day")
+          .toISOString()}`
+      ).then((data) => isMounted && setVisitors(normalize(data))),
+    ]);
+    fetchData.finally(() => setFetching(false));
     return () => {
       isMounted = false;
     };
@@ -173,18 +76,66 @@ export default function HomePage() {
 
   const { isLoading: isLoadingForModels } = useModels();
 
-  if (isLoadingForModels) {
+  const isLoading = isLoadingForModels | fetching;
+
+  if (isLoading) {
     return <LoadingIndicatorPage />;
   }
 
-  const recentEmails = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}];
+  const onLayoutChange = (newLayout) => {
+    setLayout(newLayout);
+    request("/api/layout", {
+      method: "PUT",
+      body: {
+        layout: newLayout,
+      },
+    });
+  };
 
   return (
     <Layout padding={6}>
       <Grid gap={6}>
         <Main>
           <Nav />
-          <Box paddingTop={6}>
+          <InfoProvider
+            value={{
+              todo: todos.length,
+              visitor: visitors.length,
+              loc: LoC,
+            }}
+          >
+            <DraggableContainer
+              style={{
+                background: "#cc336310",
+                borderRadius: 4,
+                marginTop: 24,
+              }}
+              handle=".handle"
+              layout={layout}
+              cols={12}
+              rowHeight={35}
+              onLayoutChange={onLayoutChange}
+            >
+              {layout.map((lay) => (
+                <DraggableItem key={lay.i} component={Card}>
+                  <Box
+                    paddingLeft={3}
+                    paddingRight={3}
+                    paddingTop={2}
+                    paddingBottom={2}
+                    position="relative"
+                    height="100%"
+                  >
+                    <Handle className=".handle">
+                      <MenuBurger />
+                    </Handle>
+                    <Section type={lay.i} />
+                  </Box>
+                </DraggableItem>
+              ))}
+            </DraggableContainer>
+          </InfoProvider>
+          {/* <Box paddingTop={6}>
             <Grid gap={2}>
               {headerItems.map((headerItem, i) => (
                 <CustomGridItem key={i} col={3} padding={3}>
@@ -279,7 +230,7 @@ export default function HomePage() {
                 </Tbody>
               </Table>
             </Box>
-          </Card>
+          </Card> */}
         </Main>
         <Sidebar todos={todos} />
       </Grid>

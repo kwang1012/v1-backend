@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useIntl } from "react-intl";
 import {
   SettingsPageTitle,
   LoadingIndicatorPage,
   useNotification,
-  request,
   onRowClick,
   stopPropagation,
   useOverlayBlocker,

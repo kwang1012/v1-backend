@@ -23,7 +23,7 @@ ChartJS.register(
 );
 
 const FullLine = styled(Line)`
-  height: 200px !important;
+  height: calc(100% - 22px) !important;
 `;
 
 const options = {
