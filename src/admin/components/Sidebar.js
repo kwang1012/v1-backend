@@ -117,11 +117,13 @@ export default function Sidebar({ todos }) {
               </Box>
               <CardContent paddingLeft={2}>
                 <CardTitle>{todo.title}</CardTitle>
-                <CardSubtitle>
-                  {moment(todo.due).format("MMM D [at] H:mmA")}
-                </CardSubtitle>
+                {todo.due && (
+                  <CardSubtitle>
+                    {moment(todo.due).format("MMM D [at] H:mmA")}
+                  </CardSubtitle>
+                )}
               </CardContent>
-              <CardBadge>{todo.priority}</CardBadge>
+              {todo.priority && <CardBadge>{todo.priority}</CardBadge>}
             </CardBody>
           </Card>
         ))}

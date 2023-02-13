@@ -31,13 +31,13 @@ const Main = styled(Box)`
 
 const Handle = styled.div`
   position: absolute;
-  top: -8px;
+  top: -5px;
   left: 50%;
   cursor: move;
   transform: translateX(-50%) scaleX(2);
-  font-size: 30px;
+  font-size: 22px;
   & path {
-    fill: rgba(0, 0, 0, 0.4);
+    fill: rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -47,6 +47,7 @@ export default function HomePage() {
   const [visitors, setVisitors] = useState([]);
   const [layout, setLayout] = useState([]);
   const [fetching, setFetching] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -96,7 +97,10 @@ export default function HomePage() {
     <Layout padding={6}>
       <Grid gap={6}>
         <Main>
-          <Nav />
+          <Nav
+            editing={editing}
+            onToggle={() => setEditing((editing) => !editing)}
+          />
           <InfoProvider
             value={{
               todo: todos.length,
@@ -106,15 +110,19 @@ export default function HomePage() {
           >
             <DraggableContainer
               style={{
-                background: "#cc336310",
+                background: editing ? "#cc336310" : "",
                 borderRadius: 4,
                 marginTop: 24,
+                transition: "background 0.2s",
               }}
-              handle=".handle"
+              draggableHandle=".draggable-handle"
               layout={layout}
               cols={12}
               rowHeight={35}
+              margin={[12, 12]}
               onLayoutChange={onLayoutChange}
+              isDraggable={editing}
+              isResizable={editing}
             >
               {layout.map((lay) => (
                 <DraggableItem key={lay.i} component={Card}>
@@ -126,9 +134,11 @@ export default function HomePage() {
                     position="relative"
                     height="100%"
                   >
-                    <Handle className=".handle">
-                      <MenuBurger />
-                    </Handle>
+                    {editing && (
+                      <Handle className="draggable-handle">
+                        <MenuBurger />
+                      </Handle>
+                    )}
                     <Section type={lay.i} />
                   </Box>
                 </DraggableItem>

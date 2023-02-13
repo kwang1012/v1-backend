@@ -11,11 +11,13 @@ const Container = styled.div`
 `;
 
 export const DraggableItem = forwardRef(
-  ({ component, children, ...props }, ref) => {
+  ({ component, children, className, ...props }, ref) => {
     return (
       <>
         {component ? (
-          <div ref={ref}>{createElement(component, props, ...children)}</div>
+          <div ref={ref} {...props}>
+            {createElement(component, { className, height: "100%" }, children)}
+          </div>
         ) : (
           <Container {...props} />
         )}
