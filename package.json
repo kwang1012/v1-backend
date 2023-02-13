@@ -13,10 +13,10 @@
   "dependencies": {
     "@babel/preset-react": "^7.18.6",
     "@ckeditor/strapi-plugin-ckeditor": "^0.0.5",
-    "@strapi/plugin-i18n": "4.6.1",
-    "@strapi/plugin-users-permissions": "4.6.1",
+    "@strapi/plugin-i18n": "^4.6.1",
+    "@strapi/plugin-users-permissions": "^4.6.1",
     "@strapi/provider-email-nodemailer": "^4.6.1",
-    "@strapi/strapi": "4.6.1",
+    "@strapi/strapi": "^4.6.1",
     "axios": "^1.2.2",
     "babel-loader": "^9.1.2",
     "better-sqlite3": "7.4.6",
@@ -26,6 +26,7 @@
     "node-cron": "^3.0.2",
     "pg": "^8.8.0",
     "react-chartjs-2": "^5.2.0",
+    "react-draggable-layout": "^0.2.5",
     "sharp": "^0.31.3",
     "strapi-plugin-email-designer": "^2.1.2",
     "strapi-provider-email-mailersend": "^1.0.2"

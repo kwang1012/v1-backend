@@ -9,6 +9,8 @@ import {
   IconButton,
   TextButton,
   Button,
+  Select,
+  Option,
 } from "@strapi/design-system";
 import { request } from "@strapi/helper-plugin";
 import { Code } from "@strapi/icons";
@@ -67,7 +69,13 @@ const ButtonGroup = styled(Box)`
 export default function CommitList() {
   const history = useHistory();
   const [timelineObj, setTimelineObj] = useState({});
+  const [selectedBranch, setSelectedBranch] = useState("");
+  const [branches, setBranches] = useState([]);
   useEffect(() => {
+    request("/monitor/github/branches").then((data) => {
+      setBranches(data);
+      setSelectedBranch(data[0]?.name || "");
+    });
     request("/monitor/github/commits").then((commits) => {
       const tmp = {};
       commits.forEach((commit) => {
@@ -84,6 +92,15 @@ export default function CommitList() {
 
   return (
     <>
+      <Box width="100px">
+        <Select value={selectedBranch}>
+          {branches.map((branch) => (
+            <Option key={branch.name} value={branch.name}>
+              {branch.name}
+            </Option>
+          ))}
+        </Select>
+      </Box>
       <Box marginTop={6}>
         {Object.entries(timelineObj).map(([key, commits]) => (
           <Box key={key}>

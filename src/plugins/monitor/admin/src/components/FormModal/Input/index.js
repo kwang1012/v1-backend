@@ -8,6 +8,8 @@ import React from "react";
 import { useIntl } from "react-intl";
 import { ToggleInput } from "@strapi/design-system/ToggleInput";
 import { TextInput } from "@strapi/design-system/TextInput";
+import { Select, Option } from "@strapi/design-system/Select";
+import * as Helper from "@strapi/helper-plugin";
 import PropTypes from "prop-types";
 
 const Input = ({
@@ -21,11 +23,15 @@ const Input = ({
   providerToEditName,
   type,
   value,
+  multi = false,
+  options = [],
 }) => {
   const { formatMessage } = useIntl();
   const inputValue =
     name === "noName"
       ? `${strapi.backendURL}/api/connect/${providerToEditName}/callback`
+      : multi && !value
+      ? []
       : value;
 
   const label = formatMessage(
@@ -73,6 +79,31 @@ const Input = ({
   const errorMessage = error
     ? formatMessage({ id: error, defaultMessage: error })
     : "";
+
+  if (type === "select") {
+    return (
+      <Select
+        id={name}
+        aria-label={name}
+        disabled={disabled}
+        error={errorMessage}
+        label={label}
+        name={name}
+        onChange={onChange}
+        placeholder={formattedPlaceholder}
+        value={inputValue}
+        clearLabel="Clear"
+        multi
+        onClear={() => {
+          onChange({ target: { name, value: [] } });
+        }}
+      >
+        {options.map((option) => (
+          <Option value={option.value}>{option.text}</Option>
+        ))}
+      </Select>
+    );
+  }
 
   return (
     <TextInput

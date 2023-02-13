@@ -22,6 +22,7 @@ import RevenueChart from "components/RevenueChart";
 import { normalize } from "utils";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
+// import DragGrid from "component/Draggable";
 
 const Layout = styled(Box)`
   height: 100vh;
@@ -184,6 +185,32 @@ export default function HomePage() {
       <Grid gap={6}>
         <Main>
           <Nav />
+          {/* <DragGrid>
+            {headerItems.map((headerItem, i) => (
+              // <CustomGridItem key={i} col={3} padding={3}>
+              <div key={i}>
+                <Flex justifyContent="space-between">
+                  {headerItem.icon}
+                  <SimpleMenu as={IconButton} icon={<MoreVert />} label="More">
+                    {headerItem.menuItems.map((menuItem, mid) => (
+                      <MenuItem key={mid} onClick={menuItem.onClick}>
+                        {menuItem.title}
+                      </MenuItem>
+                    ))}
+                  </SimpleMenu>
+                </Flex>
+                <Box paddingTop={2} paddingBottom={2}>
+                  {typeof headerItem.value === "string" ? (
+                    <Typography variant="beta">{headerItem.value}</Typography>
+                  ) : (
+                    headerItem.value
+                  )}
+                </Box>
+                <Typography>{headerItem.description}</Typography>
+              </div>
+              // </CustomGridItem>
+            ))}
+          </DragGrid> */}
           <Box paddingTop={6}>
             <Grid gap={2}>
               {headerItems.map((headerItem, i) => (

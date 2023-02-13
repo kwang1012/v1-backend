@@ -5,28 +5,15 @@ import { Switch, Route } from "react-router-dom";
 import CommitList from "./CommitList";
 import Detail from "./Details";
 
-export default function Visitors() {
-  const [selectedBranch, setSelectedBranch] = useState("");
-  const [branches, setBranches] = useState([]);
-  useEffect(() => {
-    request("/monitor/github/branches").then((data) => {
-      setBranches(data);
-      setSelectedBranch(data[0]?.name || "");
-    });
-  }, []);
+function Main() {
+  return <div>123</div>;
+}
 
+export default function Repos() {
   return (
     <>
-      <Box width="100px">
-        <Select value={selectedBranch}>
-          {branches.map((branch) => (
-            <Option key={branch.name} value={branch.name}>
-              {branch.name}
-            </Option>
-          ))}
-        </Select>
-      </Box>
       <Switch>
+        {/* <Route path="/plugins/monitor/repo" component={Main} exact /> */}
         <Route path="/plugins/monitor/repo" component={CommitList} exact />
         <Route path="/plugins/monitor/repo/:sha" component={Detail} />
       </Switch>

@@ -6,7 +6,7 @@ module.exports = ({ strapi }) => ({
   async getBranches() {
     const providers = await strapi
       .store({ type: "plugin", name: "monitor", key: "grant" })
-      .get("repo");
+      .get();
     const token = providers.repo.key;
     return axios
       .get("https://api.github.com/repos/kwang1012/v1-backend/branches", {
