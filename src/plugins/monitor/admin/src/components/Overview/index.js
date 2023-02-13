@@ -2,6 +2,8 @@ import React from "react";
 import { Box, Flex, Typography } from "@strapi/design-system";
 import { Clock, List } from "@strapi/icons";
 import styled from "styled-components";
+// import { DraggableContainer, DraggableItem } from "../GridLayout";
+// import { Card } from "@strapi/design-system";
 
 const Grid = styled(Box)`
   display: grid;
@@ -28,8 +30,35 @@ const StyledGridItem = styled.div`
 `;
 
 export default function Overview() {
+  // const layout = [
+  //   { i: "a", x: 0, y: 0, w: 1, h: 2 },
+  //   { i: "b", x: 1, y: 0, w: 3, h: 2 },
+  //   { i: "c", x: 4, y: 0, w: 1, h: 2 },
+  // ];
+
   return (
     <>
+      {/* <DraggableContainer
+        style={{
+          width: "100%",
+          height: "100%",
+          background: "#cc336310",
+          borderRadius: 4,
+        }}
+        layout={layout}
+        cols={12}
+        rowHeight={30}
+      >
+        <DraggableItem key="a" component={Card}>
+          123
+        </DraggableItem>
+        <DraggableItem key="b" component={Card}>
+          b
+        </DraggableItem>
+        <DraggableItem key="c" component={Card}>
+          c
+        </DraggableItem>
+      </DraggableContainer> */}
       <Flex marginTop={10}>
         <Box marginRight={4}>
           <Clock />
