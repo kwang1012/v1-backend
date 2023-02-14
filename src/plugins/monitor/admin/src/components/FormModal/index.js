@@ -10,8 +10,6 @@ import { Button } from "@strapi/design-system/Button";
 import { Stack } from "@strapi/design-system/Stack";
 import { Breadcrumbs, Crumb } from "@strapi/design-system/Breadcrumbs";
 import { Grid, GridItem } from "@strapi/design-system/Grid";
-import { Loader } from "@strapi/design-system/Loader";
-import { Flex } from "@strapi/design-system/Flex";
 import {
   ModalLayout,
   ModalHeader,
@@ -38,7 +36,9 @@ const FormModal = ({
 
   useEffect(() => {
     if (isOpen && providerToEditName === "repo") {
-      request("/monitor/github/repos").then((data) => setRepos(data));
+      request("/monitor/github/repos")
+        .then((data) => setRepos(data))
+        .catch(console.log);
     }
   }, [isOpen]);
 
@@ -78,16 +78,10 @@ const FormModal = ({
               <ModalBody>
                 <Stack spacing={1}>
                   <Grid gap={5}>
-                    {providerToEditName === "repo" && !repos ? (
-                      <GridItem col={12} xs={12}>
-                        <Flex justifyContent="center">
-                          <Loader>Loading...</Loader>
-                        </Flex>
-                      </GridItem>
-                    ) : (
-                      layout.form.map((row) => {
-                        return row.map((input) => {
-                          return (
+                    {layout.form.map((row) =>
+                      row.map(
+                        (input) =>
+                          (input.name !== "repos" || repos) && (
                             <GridItem key={input.name} col={input.size} xs={12}>
                               <Input
                                 {...input}
@@ -98,9 +92,8 @@ const FormModal = ({
                                 options={options[input.name]}
                               />
                             </GridItem>
-                          );
-                        });
-                      })
+                          )
+                      )
                     )}
                   </Grid>
                 </Stack>
