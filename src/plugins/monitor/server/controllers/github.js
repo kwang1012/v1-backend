@@ -3,11 +3,30 @@ const axios = require("axios");
 const moment = require("moment");
 
 module.exports = ({ strapi }) => ({
-  async getBranches() {
+  async getToken() {
     const providers = await strapi
       .store({ type: "plugin", name: "monitor", key: "grant" })
       .get();
-    const token = providers.repo.key;
+    return providers.repo.key;
+  },
+  async getSavedRepos() {
+    const providers = await strapi
+      .store({ type: "plugin", name: "monitor", key: "grant" })
+      .get();
+    return providers.repo.repos;
+  },
+  async getRepos() {
+    const token = await this.getToken();
+    return axios
+      .get("https://api.github.com/users/kwang1012/repos", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(({ data }) => data);
+  },
+  async getBranches() {
+    const token = await this.getToken();
     return axios
       .get("https://api.github.com/repos/kwang1012/v1-backend/branches", {
         headers: {
@@ -17,10 +36,7 @@ module.exports = ({ strapi }) => ({
       .then(({ data }) => data);
   },
   async getCommit(ctx) {
-    const providers = await strapi
-      .store({ type: "plugin", name: "monitor", key: "grant" })
-      .get("repo");
-    const token = providers.repo.key;
+    const token = await this.getToken();
     return axios
       .get(
         `https://api.github.com/repos/kwang1012/v1-backend/commits/${ctx.params.sha}`,
@@ -34,10 +50,7 @@ module.exports = ({ strapi }) => ({
       .catch(() => {});
   },
   async getCommits(ctx) {
-    const providers = await strapi
-      .store({ type: "plugin", name: "monitor", key: "grant" })
-      .get("repo");
-    const token = providers.repo.key;
+    const token = await this.getToken();
     const today = moment();
     const since = today.startOf("week").toISOString();
     return axios

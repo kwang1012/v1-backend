@@ -13,17 +13,17 @@ const keyLabel = {
   id: "keyLabel",
   defaultMessage: "Token",
 };
-const branchesLabel = {
-  id: "branchesLabel",
-  defaultMessage: "Branches",
+const reposLabel = {
+  id: "reposLabel",
+  defaultMessage: "Repositories",
 };
 const textPlaceholder = {
   id: "textPlaceholder",
   defaultMessage: "TEXT",
 };
-const branchesPlaceholder = {
-  id: "branchesPlaceholder",
-  defaultMessage: "Select the branches",
+const reposPlaceholder = {
+  id: "reposPlaceholder",
+  defaultMessage: "Select the repos",
 };
 
 const forms = {
@@ -72,19 +72,19 @@ const forms = {
           },
         },
       ],
-      // [
-      //   {
-      //     intlLabel: branchesLabel,
-      //     name: "branches",
-      //     type: "select",
-      //     placeholder: branchesPlaceholder,
-      //     size: 12,
-      //     validations: {
-      //       required: true,
-      //     },
-      //     multi: true,
-      //   },
-      // ],
+      [
+        {
+          intlLabel: reposLabel,
+          name: "repos",
+          type: "select",
+          placeholder: reposPlaceholder,
+          size: 12,
+          validations: {
+            required: true,
+          },
+          isMulti: true,
+        },
+      ],
     ],
     schema: yup.object().shape({
       enabled: yup.bool().required(translatedErrors.required),

@@ -3,6 +3,24 @@
 module.exports = [
   {
     method: "GET",
+    path: "/github/saved-repos",
+    handler: "github.getSavedRepos",
+    config: {
+      policies: [],
+      auth: false,
+    },
+  },
+  {
+    method: "GET",
+    path: "/github/repos",
+    handler: "github.getRepos",
+    config: {
+      policies: [],
+      auth: false,
+    },
+  },
+  {
+    method: "GET",
     path: "/github/branches",
     handler: "github.getBranches",
     config: {

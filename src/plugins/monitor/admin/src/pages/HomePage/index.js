@@ -116,7 +116,7 @@ const HomePage = () => {
                 icon={getIcon(provider)}
                 key={i}
               >
-                {provider.name}
+                {provider.title}
               </SubNavLink>
             ))}
           </SubNavSection>

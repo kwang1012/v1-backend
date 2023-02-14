@@ -4,12 +4,14 @@
  *
  */
 
-import React from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useIntl } from "react-intl";
 import { Button } from "@strapi/design-system/Button";
 import { Stack } from "@strapi/design-system/Stack";
 import { Breadcrumbs, Crumb } from "@strapi/design-system/Breadcrumbs";
 import { Grid, GridItem } from "@strapi/design-system/Grid";
+import { Loader } from "@strapi/design-system/Loader";
+import { Flex } from "@strapi/design-system/Flex";
 import {
   ModalLayout,
   ModalHeader,
@@ -18,7 +20,7 @@ import {
 } from "@strapi/design-system/ModalLayout";
 import PropTypes from "prop-types";
 import { Formik } from "formik";
-import { Form } from "@strapi/helper-plugin";
+import { Form, request } from "@strapi/helper-plugin";
 import Input from "./Input";
 
 const FormModal = ({
@@ -32,6 +34,24 @@ const FormModal = ({
   providerToEditName,
 }) => {
   const { formatMessage } = useIntl();
+  const [repos, setRepos] = useState(null);
+
+  useEffect(() => {
+    if (isOpen && providerToEditName === "repo") {
+      request("/monitor/github/repos").then((data) => setRepos(data));
+    }
+  }, [isOpen]);
+
+  const options = useMemo(
+    () => ({
+      ...(providerToEditName === "repo"
+        ? {
+            repos,
+          }
+        : {}),
+    }),
+    [repos]
+  );
 
   if (!isOpen) {
     return null;
@@ -58,21 +78,30 @@ const FormModal = ({
               <ModalBody>
                 <Stack spacing={1}>
                   <Grid gap={5}>
-                    {layout.form.map((row) => {
-                      return row.map((input) => {
-                        return (
-                          <GridItem key={input.name} col={input.size} xs={12}>
-                            <Input
-                              {...input}
-                              error={errors[input.name]}
-                              onChange={handleChange}
-                              value={values[input.name]}
-                              providerToEditName={providerToEditName}
-                            />
-                          </GridItem>
-                        );
-                      });
-                    })}
+                    {providerToEditName === "repo" && !repos ? (
+                      <GridItem col={12} xs={12}>
+                        <Flex justifyContent="center">
+                          <Loader>Loading...</Loader>
+                        </Flex>
+                      </GridItem>
+                    ) : (
+                      layout.form.map((row) => {
+                        return row.map((input) => {
+                          return (
+                            <GridItem key={input.name} col={input.size} xs={12}>
+                              <Input
+                                {...input}
+                                error={errors[input.name]}
+                                onChange={handleChange}
+                                value={values[input.name]}
+                                providerToEditName={providerToEditName}
+                                options={options[input.name]}
+                              />
+                            </GridItem>
+                          );
+                        });
+                      })
+                    )}
                   </Grid>
                 </Stack>
               </ModalBody>

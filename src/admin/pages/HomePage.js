@@ -127,10 +127,7 @@ export default function HomePage() {
               {layout.map((lay) => (
                 <DraggableItem key={lay.i} component={Card}>
                   <Box
-                    paddingLeft={3}
-                    paddingRight={3}
-                    paddingTop={2}
-                    paddingBottom={2}
+                    padding={3}
                     position="relative"
                     height="100%"
                   >

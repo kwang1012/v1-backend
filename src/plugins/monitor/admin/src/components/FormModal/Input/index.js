@@ -8,8 +8,7 @@ import React from "react";
 import { useIntl } from "react-intl";
 import { ToggleInput } from "@strapi/design-system/ToggleInput";
 import { TextInput } from "@strapi/design-system/TextInput";
-import { Select, Option } from "@strapi/design-system/Select";
-import * as Helper from "@strapi/helper-plugin";
+import { Select, Option } from "@strapi/design-system";
 import PropTypes from "prop-types";
 
 const Input = ({
@@ -23,14 +22,14 @@ const Input = ({
   providerToEditName,
   type,
   value,
-  multi = false,
+  isMulti = false,
   options = [],
 }) => {
   const { formatMessage } = useIntl();
   const inputValue =
     name === "noName"
       ? `${strapi.backendURL}/api/connect/${providerToEditName}/callback`
-      : multi && !value
+      : isMulti && !value
       ? []
       : value;
 
@@ -89,17 +88,25 @@ const Input = ({
         error={errorMessage}
         label={label}
         name={name}
-        onChange={onChange}
+        onChange={(value) =>
+          onChange({
+            target: {
+              name,
+              value,
+            },
+          })
+        }
         placeholder={formattedPlaceholder}
         value={inputValue}
         clearLabel="Clear"
-        multi
-        onClear={() => {
-          onChange({ target: { name, value: [] } });
-        }}
+        multi={isMulti}
+        withTags
+        onClear={() => onChange({ target: { name, value: [] } })}
       >
         {options.map((option) => (
-          <Option value={option.value}>{option.text}</Option>
+          <Option key={option.name} value={JSON.stringify(option)}>
+            {option.name}
+          </Option>
         ))}
       </Select>
     );
@@ -150,7 +157,11 @@ Input.propTypes = {
   }),
   providerToEditName: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  value: PropTypes.oneOfType([
+    PropTypes.bool,
+    PropTypes.string,
+    PropTypes.array,
+  ]),
 };
 
 export default Input;
