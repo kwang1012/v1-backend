@@ -1,0 +1,1 @@
+docker exec -t kkapp-postgres pg_dump -c -U kkapp > dump_`date +%d-%m-%Y"_"%H_%M_%S`.sql
