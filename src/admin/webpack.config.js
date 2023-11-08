@@ -6,12 +6,12 @@ module.exports = (config, webpack) => {
   /**
    * Overwrite the dashboard home Component
    */
-  config.plugins.push(
+  /* config.plugins.push(
     new webpack.NormalModuleReplacementPlugin(
       /.cache\/admin\/src\/pages\/HomePage\/index\.js/,
       path.resolve(__dirname, "pages/HomePage.js")
     )
-  );
+  ); */
   config.resolve.alias = {
     ...config.resolve.alias,
     moment$: path.dirname(require.resolve("moment")),

@@ -25,13 +25,25 @@ module.exports = createCoreController(
         const knex = strapi.db.connection;
         const results = await knex("publications")
           .select(
-            knex.raw(
-              `json_agg(publications.*) as pubs, date_trunc('${ctx.query.group}', date) as year`
-            )
+            knex.raw(`json_arrayagg(
+              json_object(
+                "id", id,
+                "title", title,
+                "venue", venue,
+                "url", url,
+                "abstract", abstract,
+                "bib", bib,
+                "author_list", author_list,
+                "date", date,
+		"image", image
+              )
+            ) pubs, year(date) year`)
           )
           .groupBy("year")
           .orderBy("year", "desc");
-        return this.transformResponse(camelize(results));
+	results.forEach(result => result.pubs = JSON.parse(result.pubs));
+	return camelize(results);
+        // return this.transformResponse(camelize(results));
       } else {
         return super.find(ctx);
       }
